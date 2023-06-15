@@ -8,11 +8,11 @@ import axios, { csrf } from '@/lib/axios'
 import PrimaryButton from '@/components/PrimaryButton'
 
 const UpdatePasswordForm = () => {
-    const [currentPassword, setCurrentPassword] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = React.useState('')
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-    const [errors, setErrors] = React.useState([])
+    const [errors, setErrors] = useState([])
     const [status, setStatus] = useState<string | null>(null)
 
     const submitForm: FormEventHandler = async (event) => {

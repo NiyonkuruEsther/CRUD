@@ -12,10 +12,10 @@ import { useAuth } from '@/hooks/auth'
 const DeleteUserForm = () => {
     const { logout } = useAuth({ middleware: 'auth' })
 
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = React.useState(false)
+    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
     const passwordInput = useRef<HTMLInputElement>()
-    const [password, setPassword] = React.useState('')
-    const [errors, setErrors] = React.useState([])
+    const [password, setPassword] = useState('')
+    const [errors, setErrors] = useState([])
     const [status, setStatus] = useState<string | null>(null)
 
     const confirmUserDeletion = () => {
