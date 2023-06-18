@@ -24,20 +24,18 @@ class StudentTeacher extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, TeacherStudent $teacherStudent)
     {
-        $studentTeacher = new StudentTeacher();
-        $studentTeacher->name = $request->input('name');
-        $studentTeacher->email = $request->input('age');
-        $studentTeacher->email = $request->input('grade');
-        $studentTeacher->email = $request->input('role');
-        $studentTeacher->email = $request->input('url');
+        $studentTeachers = new TeacherStudent;
+        $studentTeachers->name = $request->input('name');
+        $studentTeachers->age = $request->input('age');
+        $studentTeachers->url = $request->input('url');
+        $studentTeachers->grade = $request->input('grade');
+        $studentTeachers->role = $request->input('role');
+        $studentTeachers->save();
 
-
-        // Set other attributes as needed
-        $studentTeacher->save();
-    
-        return response()->json($studentTeacher, 201);}
+        return response()->json('Student created successfully');
+    }
 
     /**
      * Display the specified resource.

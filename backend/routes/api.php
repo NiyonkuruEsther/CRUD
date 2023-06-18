@@ -19,5 +19,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 // Route::get('/studentTeachers/teacher', 'StudentTeacher@index');
 Route::get('/studentTeachers/teacher', [StudentTeacher::class, 'index']);
+Route::post('/students', [StudentTeacher::class, 'store']);
 
 

@@ -15,6 +15,7 @@ const AddStudentPopup = ({ isOpen, onClose, onAddStudent }) => {
       age,
       grade,
       url,
+      role: 'student',
     };
 
     // Call the onAddStudent function passed as a prop

@@ -1,16 +1,17 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
 import AddStudentPopup from "./AddStudentPopup"
+import {nanoid} from 'nanoid'
 
 interface Student {
-    id: number,
+    id?: string,
     name: string,
     age: number,
     grade: number,
     url: string,
     role: 'student',
-    updated_at: null,
-    created_at: null
+    updated_at?: null,
+    created_at?: null
 }
 
 const StudentTable: React.FC = () => {
@@ -20,24 +21,6 @@ const StudentTable: React.FC = () => {
     const [studentsPerPage] = useState(5)
     const [isPopupOpen, setPopupOpen] = useState(false);
     // const [students, setStudents] = useState([]);
-
-    const handleUpdate = async () => {
-        const id = 1; // Provide the ID of the record you want to update
-        const data = {
-            name: 'New Name',
-            email: 'new@example.com',
-            // Provide other column values as needed
-        };
-
-        try {
-            const response = await axios.get(`http://localhost:8000/studentTeachers/teacher`);
-            console.log(response.data);
-            // Handle successful update
-        } catch (error) {
-            console.error(error);
-            // Handle error
-        }
-    };
 
     useEffect(() => {
         async function getStaticProps() {
@@ -68,17 +51,31 @@ const StudentTable: React.FC = () => {
     //     setSearchTerm(e.target.value)
     // }
 
-    const handleAddStudent = (newStudent : Student) => {
+    const handleAddStudent = (newStudent : Omit < Student, 'id' >) => {
+        const studentWithId: Student = {
+            id: nanoid(),
+            ...newStudent
+        };
+
         setStudents([
             ...students,
-            newStudent
+            studentWithId
         ]);
+        const addStudent = async (studentData) => {
+            try {
+                const response = await axios.post('http://localhost:8000/api/students', studentData);
+                console.log(response.data); // Optional: Handle the response
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        addStudent(newStudent)
     };
 
-    const handleDeleteStudent = (id : number) => { // Logic to delete a student by ID
-        const updatedStudents = students.filter(student => student.id !== id)
-        setStudents(updatedStudents)
-    }
+    const handleDeleteStudent = (studentId : string) => {
+        const updatedStudents = students.filter((student) => student.id !== studentId);
+        setStudents(updatedStudents);
+    };
 
     // const handleEditStudent = (id : number, field : keyof Student, value : any,) => { // Logic to edit a student field
     //     const updatedStudents = students.map(student => {
@@ -102,7 +99,7 @@ const StudentTable: React.FC = () => {
     // const currentStudents = filteredStudents.slice(indexOfFirstStudent, indexOfLastStudent,)
 
     // // Change page
-    const paginate = (pageNumber : number) => setCurrentPage(pageNumber)
+    // const paginate = (pageNumber : number) => setCurrentPage(pageNumber)
 
     return (
         <div className="w-full px-12">
@@ -187,33 +184,6 @@ const StudentTable: React.FC = () => {
                     ))
                 } </div>
             </div>
-
-            {/* Pagination */}
-            <div className="w-full">
-                {
-                students.length > studentsPerPage && (
-                    <nav className="flex justify-center">
-                        <ul className="flex">
-                            {
-                            Array(Math.ceil(students.length / studentsPerPage,),).fill(0).map((_, index) => (
-                                <li key={index}>
-                                    <button onClick={
-                                            () => paginate(index + 1)
-                                        }
-                                        className={
-                                            `px-4 py-2 ${
-                                                currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
-                                            }`
-                                    }>
-                                        {
-                                        index + 1
-                                    } </button>
-                                </li>
-                            ))
-                        } </ul>
-                    </nav>
-                )
-            } </div>
         </div>
     )
 }
