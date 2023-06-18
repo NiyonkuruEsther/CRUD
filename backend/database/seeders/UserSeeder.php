@@ -26,10 +26,10 @@ class UserSeeder extends Seeder
                 'phone_no' => "078"
             ],
             [
-                'fname' => 'Mike',
-                'lname' => 'Johnson',
+                'fname' => 'Niyonkuru',
+                'lname' => 'Esther',
                 'mname' => '',
-                'email' => 'mike@example.com',
+                'email' => 'estherniyonkuru123@gmail.com',
                 'password' => bcrypt('1234'),     
                'phone_no' => "078"
 

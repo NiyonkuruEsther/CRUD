@@ -21,13 +21,14 @@ const Dashboard = () => {
             <Head>
                 <title>Laravel - Dashboard</title>
             </Head>
-            <div className="bg-[#F2EAE1] py-12 flex flex-col items-center gap-24 w-full">
+            <div className="bg-[#F2EAE1] py-12 flex flex-col items-center gap-10 w-full">
                 <div className=" flex flex-col gap-4">
                     <BiUserCircle size={200}/>
                     <p className="text-center font-bold">
                         {
                         user ?. fname
                     }
+                        {' '}
                         {
                         user ?. lname
                     } </p>
