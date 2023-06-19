@@ -14,7 +14,7 @@ class StudentTeacher extends Controller
      */
     public function index()
     {
-        $studentTeachers = TeacherStudent::where('role', 'teacher')->get();
+        $studentTeachers = TeacherStudent::where('role', 'student')->get();
         return response()->json($studentTeachers);
     }
 
@@ -77,8 +77,19 @@ class StudentTeacher extends Controller
      * @param  \App\Models\TeacherStudent  $teacherStudent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TeacherStudent $teacherStudent)
+
+     public function destroy($id)
+    // public function destroy(TeacherStudent $teacherStudent)
     {
-        //
+   
+        try {
+            $studentTeachers = TeacherStudent::findOrFail($id);
+            $studentTeachers->delete();
+
+            return response()->json(['message' => 'User deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete user'], 500);
+        }
+    
     }
 }

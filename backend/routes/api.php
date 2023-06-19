@@ -18,7 +18,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 // Route::get('/studentTeachers/teacher', 'StudentTeacher@index');
-Route::get('/studentTeachers/teacher', [StudentTeacher::class, 'index']);
+Route::get('/studentTeachers/student', [StudentTeacher::class, 'index']);
 Route::post('/students', [StudentTeacher::class, 'store']);
+Route::delete('/studentTeachers/delete/{id}', [StudentTeacher::class, 'destroy']);
 
 

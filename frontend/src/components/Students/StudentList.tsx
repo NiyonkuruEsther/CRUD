@@ -22,45 +22,64 @@ const StudentTable: React.FC = () => {
     const [isPopupOpen, setPopupOpen] = useState(false);
     // const [students, setStudents] = useState([]);
 
-    useEffect(() => {
-        async function getStaticProps() {
-            try {
-                const response = await axios.get(`${
-                    process.env.NEXT_PUBLIC_BACKEND_URL
-                }/api/studentTeachers/teacher`);
-                const data = response.data;
-                // setStudents(data.props);
-                console.log(data);
-                data.forEach(element => {
-                    students.push(element)
-                });
-                return data;
-            } catch (error) {
-                console.error(error);
-            }
+
+    async function getStaticProps() {
+        try {
+            const response = await axios.get(`${
+                process.env.NEXT_PUBLIC_BACKEND_URL
+            }/api/studentTeachers/student`);
+            const data = response.data;
+            // setStudents(data.props);
+            console.log(data);
+            data.forEach(element => {
+                students.push(element)
+            });
+            return data;
+        } catch (error) {
+            console.error(error);
         }
+    }
+    getStaticProps(); // Invoke the function
 
-        getStaticProps(); // Invoke the function
+    async function deleteUser(userId) {
+        try {
+            const response = await axios.delete(`http://localhost:8000/api/studentTeachers/delete/${userId}`);
+            console.log(response.data); // Optional: Handle the response data
+        } catch (error) {
+            console.error(error); // Optional: Handle the error
+        }
+    }
 
-    }, []);
+    // const handleDeleteStudent = (studentId : string) => {
+    //     axios.delete(`/studentTeachers/delete/${studentId}`).then(response => { // Successful deletion
+    //         const updatedStudents = students.filter(student => student.id !== studentId);
+    //         setStudents(updatedStudents);
+    //         console.log(response.data.message);
+    //     }).catch(error => { // Error handling
+    //         console.log(error.response.data.error);
+    //     });
+    // };
 
 
     console.log(students, 'jjjj');
 
-    // const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
-    //     setSearchTerm(e.target.value)
-    // }
+    const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
+        setSearchTerm(e.target.value)
+    }
 
     const handleAddStudent = (newStudent : Omit < Student, 'id' >) => {
+        const id = nanoid(); // Generate a unique ID using nanoid
+
         const studentWithId: Student = {
-            id: nanoid(),
-            ...newStudent
+            ...newStudent,
+            id: id
         };
 
         setStudents([
             ...students,
             studentWithId
         ]);
+
         const addStudent = async (studentData) => {
             try {
                 const response = await axios.post('http://localhost:8000/api/students', studentData);
@@ -69,47 +88,25 @@ const StudentTable: React.FC = () => {
                 console.error(error);
             }
         };
-        addStudent(newStudent)
+
+        addStudent(studentWithId);
     };
 
     const handleDeleteStudent = (studentId : string) => {
         const updatedStudents = students.filter((student) => student.id !== studentId);
         setStudents(updatedStudents);
+        deleteUser(studentId)
     };
 
-    // const handleEditStudent = (id : number, field : keyof Student, value : any,) => { // Logic to edit a student field
-    //     const updatedStudents = students.map(student => {
-    //         if (student.id === id) {
-    //             return {
-    //                 ...student,
-    //                 [field]: value
-    //             }
-    //         }
-    //         return student
-    //     })
-    //     setStudents(updatedStudents)
-    // }
-
-    // Filter students based on the search term
-    // const filteredStudents = students.filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()),)
-
-    // Get current students for pagination
-    // const indexOfLastStudent = currentPage * studentsPerPage
-    // const indexOfFirstStudent = indexOfLastStudent - studentsPerPage
-    // const currentStudents = filteredStudents.slice(indexOfFirstStudent, indexOfLastStudent,)
-
-    // // Change page
-    // const paginate = (pageNumber : number) => setCurrentPage(pageNumber)
 
     return (
         <div className="w-full px-12">
             <div className="flex items-center justify-between">
                 <input type="text"
                     value={searchTerm}
-                    // onChange={handleInputChange}
+                    onChange={handleInputChange}
                     placeholder="Search student"
-                    className="px-4 py-2 mr-2 rounded-lg focus:border-transparent focus:ring-[#FEAF00]"
-                />
+                    className="px-4 py-2 mr-2 rounded-lg focus:border-transparent focus:ring-[#FEAF00]"/>
                 <button onClick={
                         () => setPopupOpen(true)
                     }
@@ -187,5 +184,4 @@ const StudentTable: React.FC = () => {
         </div>
     )
 }
-
 export default StudentTable
