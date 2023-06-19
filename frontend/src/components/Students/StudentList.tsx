@@ -9,39 +9,41 @@ interface Student {
     age: number,
     grade: number,
     url: string,
-    role: 'student',
+    role: string,
     updated_at?: null,
     created_at?: null
 }
 
-const StudentTable: React.FC = () => {
+const StudentTable: React.FC = ({role}) => {
     const [students, setStudents] = useState < Student[] > ([])
     const [searchTerm, setSearchTerm] = useState('')
-    const [currentPage, setCurrentPage] = useState(1)
-    const [studentsPerPage] = useState(5)
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const [studentsPerPage] = useState(5)
     const [isPopupOpen, setPopupOpen] = useState(false);
-    // const [students, setStudents] = useState([]);
 
-
-    async function getStaticProps() {
-        try {
-            const response = await axios.get(`${
-                process.env.NEXT_PUBLIC_BACKEND_URL
-            }/api/studentTeachers/student`);
-            const data = response.data;
-            // setStudents(data.props);
-            console.log(data);
-            data.forEach(element => {
-                students.push(element)
-            });
-            return data;
-        } catch (error) {
-            console.error(error);
+    useEffect(() => {
+        async function getStaticProps() {
+            try {
+                const response = await axios.get(`${
+                    process.env.NEXT_PUBLIC_BACKEND_URL
+                }/api/studentTeachers/${role}`);
+                const data = response.data;
+                // setStudents(data.props);
+                console.log(data);
+                // data.forEach((element : Student) => {
+                setStudents(data)
+                // });
+                return data;
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
-    getStaticProps(); // Invoke the function
+        getStaticProps();
+    }, [])
 
-    async function deleteUser(userId) {
+    // Invoke the function
+
+    async function deleteUser(userId : string) {
         try {
             const response = await axios.delete(`http://localhost:8000/api/studentTeachers/delete/${userId}`);
             console.log(response.data); // Optional: Handle the response data
@@ -50,25 +52,45 @@ const StudentTable: React.FC = () => {
         }
     }
 
-    // const handleDeleteStudent = (studentId : string) => {
-    //     axios.delete(`/studentTeachers/delete/${studentId}`).then(response => { // Successful deletion
-    //         const updatedStudents = students.filter(student => student.id !== studentId);
-    //         setStudents(updatedStudents);
-    //         console.log(response.data.message);
-    //     }).catch(error => { // Error handling
-    //         console.log(error.response.data.error);
-    //     });
-    // };
+    const handleEditStudent = async (student : any, studentId : string, field : string, value : string | number) => {
+        const updatedStudents = students.map((s) => {
+            if (s.id === studentId) {
+                return {
+                    ...s,
+                    [field]: value
+                };
+            }
+            return s;
+        });
 
+        setStudents(updatedStudents);
 
-    console.log(students, 'jjjj');
+        try {
+            const {
+                id,
+                ...rest
+            } = student;
+            const updatedStudent = {
+                ...rest,
+                [field]: value
+            };
+
+            const response = await axios.put(`http://localhost:8000/api/studentTeachers/update/${studentId}`, updatedStudent);
+            console.log(response.data); // Optional: Handle the response
+        } catch (error) {
+            console.error(error); // Optional: Handle the error
+        }
+    };
+
+    console.log(students, 'ayayaydsfds');
 
     const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setSearchTerm(e.target.value)
     }
 
     const handleAddStudent = (newStudent : Omit < Student, 'id' >) => {
-        const id = nanoid(); // Generate a unique ID using nanoid
+        const id = nanoid();
+        // Generate a unique ID using nanoid
 
         const studentWithId: Student = {
             ...newStudent,
@@ -80,7 +102,7 @@ const StudentTable: React.FC = () => {
             studentWithId
         ]);
 
-        const addStudent = async (studentData) => {
+        const addStudent = async (studentData : Student) => {
             try {
                 const response = await axios.post('http://localhost:8000/api/students', studentData);
                 console.log(response.data); // Optional: Handle the response
@@ -97,7 +119,6 @@ const StudentTable: React.FC = () => {
         setStudents(updatedStudents);
         deleteUser(studentId)
     };
-
 
     return (
         <div className="w-full px-12">
@@ -132,53 +153,58 @@ const StudentTable: React.FC = () => {
 
                 <div className="w-full ">
                     {
-                    students.map(student => (
-                        <div key={
-                                student.id
-                            }
-                            className="w-full grid grid-cols-5">
-                            <img src={
-                                    student.url
+                    students.map(student => {
+                        if (role === 'teacher') {
+                            student.role = 'teacher'
+                        } else {
+                            student.role = 'student'
+                        }
+                        return (
+                            <div key={
+                                    student.id
                                 }
-                                alt={
-                                    student.name
-                                }
-                                className="h-16 w-16 rounded-full object-center object-cover"/>
-                            <input type="text"
-                                value={
-                                    student.name
-                                }
-                                // onChange={
-                                //     e => handleEditStudent(student.id, 'name', e.target.value,)
-                                // }
-                                className=" py-1 border-none "
-                            />
-                            <input type="number"
-                                value={
-                                    student.age
-                                }
-                                // onChange={
-                                //     e => handleEditStudent(student.id, 'age', parseInt(e.target.value),)
-                                // }
-                                className=" py-1 border-none"
-                            />
-                            <input type="text"
-                                value={
-                                    student.grade
-                                }
-                                // onChange={
-                                //     e => handleEditStudent(student.id, 'grade', e.target.value,)
-                                // }
-                                className=" py-1 border-none "
-                            />
-                            <button onClick={
-                                    () => handleDeleteStudent(student.id)
-                                }
-                                className="px-4 py-2 bg-red-500 w-fit text-white rounded-md hover:bg-red-600">
-                                Delete
-                            </button>
-                        </div>
-                    ))
+                                className="w-full grid grid-cols-5">
+                                <img src={
+                                        student.url
+                                    }
+                                    alt={
+                                        student.name
+                                    }
+                                    className="h-16 w-16 rounded-full object-center object-cover"/>
+                                <input type="text"
+                                    value={
+                                        student.name
+                                    }
+                                    onChange={
+                                        e => handleEditStudent(student, student.id, 'name', e.target.value,)
+                                    }
+                                    className=" py-1 border-none "/>
+                                <input type="number"
+                                    value={
+                                        student.age
+                                    }
+                                    onChange={
+                                        e => handleEditStudent(students, student.id, 'age', parseInt(e.target.value),)
+                                    }
+                                    className=" py-1 border-none"/>
+                                <input type="text"
+                                    value={
+                                        student.grade
+                                    }
+                                    onChange={
+                                        e => handleEditStudent(student, student.id, 'grade', e.target.value,)
+                                    }
+                                    className=" py-1 border-none "/>
+                                <button onClick={
+                                        () => handleDeleteStudent(student.id)
+                                    }
+                                    className="px-4 py-2 bg-red-500 w-fit text-white rounded-md hover:bg-red-600">
+                                    Delete
+                                </button>
+
+                            </div>
+                        )
+                    })
                 } </div>
             </div>
         </div>

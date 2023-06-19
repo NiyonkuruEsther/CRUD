@@ -11,7 +11,7 @@ import {BiLogOut, BiUserCircle} from 'react-icons/bi'
 import {GiTeacher} from 'react-icons/gi'
 import {CgProfile} from 'react-icons/cg'
 
-const Dashboard = () => {
+const TeachersPage = () => {
     const router = useRouter()
     const {user} = useAuth({middleware: 'auth'})
     const {logout} = useAuth({middleware: 'auth'})
@@ -69,11 +69,11 @@ const Dashboard = () => {
                     </ResponsiveNavButton>
                 </div>
             </div>
-            <div className="text-right mx-auto text-7xl">
-                <h1>Dashboard</h1>
+            <div className="py-12 col-span-4">
+                <StudentTable role='teacher' />
             </div>
         </div>
     )
 }
 
-export default Dashboard
+export default TeachersPage

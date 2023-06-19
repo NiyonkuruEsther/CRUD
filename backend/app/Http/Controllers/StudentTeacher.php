@@ -12,9 +12,9 @@ class StudentTeacher extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($role)
     {
-        $studentTeachers = TeacherStudent::where('role', 'student')->get();
+        $studentTeachers = TeacherStudent::where('role', $role)->get();
         return response()->json($studentTeachers);
     }
 
@@ -55,21 +55,22 @@ class StudentTeacher extends Controller
      * @param  \App\Models\TeacherStudent  $teacherStudent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TeacherStudent $teacherStudent)
-    {
-        $studentTeacher = StudentTeacher::findOrFail($id);
+    public function update(Request $request, $id)
+{
+    $studentTeachers = TeacherStudent::findOrFail($id);
     
-        $studentTeacher->name = $request->input('name');
-        $studentTeacher->email = $request->input('age');
-        $studentTeacher->email = $request->input('grade');
-        $studentTeacher->email = $request->input('role');
-        $studentTeacher->email = $request->input('url');
+    $studentTeachers->name = $request->input('name');
+    $studentTeachers->age = $request->input('age');
+    $studentTeachers->grade = $request->input('grade');
+    $studentTeachers->role = $request->input('role');
+    $studentTeachers->url = $request->input('url');
 
-        // Update other columns as needed
-    
-        $studentTeacher->save();
-    
-        return response()->json($studentTeacher);    }
+    // Update other columns as needed
+
+    $studentTeachers->save();
+
+    return response()->json($studentTeachers);
+}
 
     /**
      * Remove the specified resource from storage.
