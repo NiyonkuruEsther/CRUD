@@ -90,7 +90,6 @@ class StudentTeacher extends Controller
             return response()->json(['message' => 'User deleted successfully']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to delete user'], 500);
-        }
-    
+        }    
     }
 }
