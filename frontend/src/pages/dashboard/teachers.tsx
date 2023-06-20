@@ -49,10 +49,7 @@ const TeachersPage = () => {
                         <GiTeacher/>
                         Teachers
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={"/dashboard/students"}
-                        active={
-                            router.pathname === '/dashboard/students'
-                    }>
+                    <ResponsiveNavLink href={"/dashboard/students"}>
                         <Students/>
                         Students
                     </ResponsiveNavLink>
@@ -70,7 +67,7 @@ const TeachersPage = () => {
                 </div>
             </div>
             <div className="py-12 col-span-4">
-                <StudentTable role='teacher' />
+                <StudentTable role='teacher'/>
             </div>
         </div>
     )

@@ -56,13 +56,6 @@ const Dashboard = () => {
                         <Students/>
                         Students
                     </ResponsiveNavLink>
-                    {/* <ResponsiveNavLink href="/profile"
-                        active={
-                            router.pathname === '/profile'
-                    }>
-                        <CgProfile/>
-                        Profile
-                    </ResponsiveNavLink> */}
                     <ResponsiveNavButton onClick={logout}>
                         <BiLogOut/>
                         Logout

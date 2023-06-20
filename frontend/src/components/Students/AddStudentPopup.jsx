@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddStudentPopup = ({ isOpen, onClose, onAddStudent }) => {
+const AddStudentPopup = ({ isOpen, onClose, onAddStudent, role }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [grade, setGrade] = useState('');
@@ -15,7 +15,7 @@ const AddStudentPopup = ({ isOpen, onClose, onAddStudent }) => {
       age,
       grade,
       url,
-      role: 'student',
+      role: role,
 
     };
 

@@ -2,6 +2,7 @@ import axios from 'axios'
 import {useState, useEffect} from 'react'
 import AddStudentPopup from "./AddStudentPopup"
 import {nanoid} from 'nanoid'
+import {error} from 'console'
 
 interface Student {
     id?: string,
@@ -13,8 +14,12 @@ interface Student {
     updated_at?: null,
     created_at?: null
 }
+interface StudentTableProps {
+    role: string;
+}
 
-const StudentTable: React.FC = ({role}) => {
+const StudentTable: React.FC < StudentTableProps > = ({role}) => {
+    console.log(role);
     const [students, setStudents] = useState < Student[] > ([])
     const [searchTerm, setSearchTerm] = useState('')
     // const [currentPage, setCurrentPage] = useState(1)
@@ -28,11 +33,8 @@ const StudentTable: React.FC = ({role}) => {
                     process.env.NEXT_PUBLIC_BACKEND_URL
                 }/api/studentTeachers/${role}`);
                 const data = response.data;
-                // setStudents(data.props);
                 console.log(data);
-                // data.forEach((element : Student) => {
                 setStudents(data)
-                // });
                 return data;
             } catch (error) {
                 console.error(error);
@@ -82,7 +84,7 @@ const StudentTable: React.FC = ({role}) => {
         }
     };
 
-    console.log(students, 'ayayaydsfds');
+    // console.log(students, 'ayayaydsfds');
 
     const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setSearchTerm(e.target.value)
@@ -119,6 +121,7 @@ const StudentTable: React.FC = ({role}) => {
         setStudents(updatedStudents);
         deleteUser(studentId)
     };
+    console.log(role);
 
     return (
         <div className="w-full px-12">
@@ -138,6 +141,7 @@ const StudentTable: React.FC = ({role}) => {
                     onClose={
                         () => setPopupOpen(false)
                     }
+                    role={role}
                     onAddStudent={handleAddStudent}/>
 
             </div>
@@ -156,8 +160,10 @@ const StudentTable: React.FC = ({role}) => {
                     students.map(student => {
                         if (role === 'teacher') {
                             student.role = 'teacher'
-                        } else {
+                        } else if (role === 'student') {
                             student.role = 'student'
+                        } else {
+                            console.log("Failed");
                         }
                         return (
                             <div key={

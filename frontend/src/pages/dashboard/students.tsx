@@ -9,7 +9,6 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {BiLogOut, BiUserCircle} from 'react-icons/bi'
 import {GiTeacher} from 'react-icons/gi'
-import {CgProfile} from 'react-icons/cg'
 
 const StudentsPage = () => {
     const router = useRouter()
@@ -42,25 +41,18 @@ const StudentsPage = () => {
                         <Home/>
                         Home
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={"/teachers"}
-                        onClick={logout}>
+                    <ResponsiveNavLink href={"/dashboard/teachers"}>
                         <GiTeacher/>
                         Teachers
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={"/dashboard/teachers"}
+                    <ResponsiveNavLink href={"/dashboard/students"}
                         active={
-                            router.pathname === '/dashboard/teachers'
+                            router.pathname === '/dashboard/students'
                     }>
                         <Students/>
                         Students
                     </ResponsiveNavLink>
-                    {/* <ResponsiveNavLink href="/profile"
-                        active={
-                            router.pathname === '/profile'
-                    }>
-                        <CgProfile/>
-                        Profile
-                    </ResponsiveNavLink> */}
+
                     <ResponsiveNavButton onClick={logout}>
                         <BiLogOut/>
                         Logout
