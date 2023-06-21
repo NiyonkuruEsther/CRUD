@@ -19,9 +19,9 @@ interface StudentTableProps {
 }
 
 const StudentTable: React.FC < StudentTableProps > = ({role}) => {
-    console.log(role);
     const [students, setStudents] = useState < Student[] > ([])
     const [searchTerm, setSearchTerm] = useState('')
+    const [serachResults, setSearchResults] = useState < Student[] > ([])
     // const [currentPage, setCurrentPage] = useState(1)
     // const [studentsPerPage] = useState(5)
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -90,6 +90,12 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
         setSearchTerm(e.target.value)
     }
 
+    const handleSearch = () => {
+        const results = students.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        setSearchResults(results);
+    };
+
+
     const handleAddStudent = (newStudent : Omit < Student, 'id' >) => {
         const id = nanoid();
         // Generate a unique ID using nanoid
@@ -135,8 +141,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
                         () => setPopupOpen(true)
                     }
                     className="px-4 py-2 bg-[#FEAF00] text-white rounded-md ">
-                    Add Student
-                </button>
+                    Add {role} </button>
                 <AddStudentPopup isOpen={isPopupOpen}
                     onClose={
                         () => setPopupOpen(false)
