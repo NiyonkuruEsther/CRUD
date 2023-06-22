@@ -1,7 +1,7 @@
-import {useState} from 'react'
+import {useState} from "react"
 
 const SearchComponent: React.FC = () => {
-    const [searchTerm, setSearchTerm] = React.useState('')
+    const [searchTerm, setSearchTerm] = useState('')
 
     const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
         setSearchTerm(e.target.value)

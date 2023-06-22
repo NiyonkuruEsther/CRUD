@@ -21,7 +21,7 @@ interface StudentTableProps {
 const StudentTable: React.FC < StudentTableProps > = ({role}) => {
     const [students, setStudents] = useState < Student[] > ([])
     const [searchTerm, setSearchTerm] = useState('')
-    const [serachResults, setSearchResults] = useState < Student[] > ([])
+    const [searchResults, setSearchResults] = useState<Student[]>([]);
     // const [currentPage, setCurrentPage] = useState(1)
     // const [studentsPerPage] = useState(5)
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -43,7 +43,13 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
         getStaticProps();
     }, [])
 
-    // Invoke the function
+    useEffect(() => {
+        const results = students.filter((student) =>
+          student.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setSearchResults(results);
+      }, [searchTerm, students]);
+    
 
     async function deleteUser(userId : string) {
         try {
@@ -162,7 +168,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
 
                 <div className="w-full grid gap-6">
                     {
-                    students.map(student => {
+                    searchResults.map(student => {
                         if (role === 'teacher') {
                             student.role = 'teacher'
                         } else if (role === 'student') {
