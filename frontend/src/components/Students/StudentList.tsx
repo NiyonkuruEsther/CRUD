@@ -1,8 +1,8 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
-import AddStudentPopup from "./AddStudentPopup"
 import {nanoid} from 'nanoid'
 import {error} from 'console'
+import AddStudentPopup from './AddStudentPopup'
 
 interface Student {
     id?: string,
@@ -160,7 +160,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
                     <li className=" py-2 place-self-start">Actions</li>
                 </ul>
 
-                <div className="w-full ">
+                <div className="w-full grid gap-6">
                     {
                     students.map(student => {
                         if (role === 'teacher') {
