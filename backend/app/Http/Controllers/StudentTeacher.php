@@ -30,6 +30,7 @@ class StudentTeacher extends Controller
         $studentTeachers->name = $request->input('name');
         $studentTeachers->age = $request->input('age');
         $studentTeachers->url = $request->input('url');
+        // $studentTeachers->phone_no = $request->input('phone_no');
         $studentTeachers->grade = $request->input('grade');
         $studentTeachers->role = $request->input('role');
         $studentTeachers->save();
@@ -62,10 +63,10 @@ class StudentTeacher extends Controller
     $studentTeachers->name = $request->input('name');
     $studentTeachers->age = $request->input('age');
     $studentTeachers->grade = $request->input('grade');
+    // $studentTeachers->phone_no = $request->input('phone_no');
     $studentTeachers->role = $request->input('role');
     $studentTeachers->url = $request->input('url');
 
-    // Update other columns as needed
 
     $studentTeachers->save();
 

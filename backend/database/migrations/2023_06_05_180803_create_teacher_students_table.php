@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('url');
             $table->integer('grade'); 
+            $table->string('phone_no'); 
             $table->integer('age'); 
             $table->string('role');
             $table->timestamps();

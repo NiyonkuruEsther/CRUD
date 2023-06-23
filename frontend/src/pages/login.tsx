@@ -5,24 +5,21 @@ import Input from '@/components/Input'
 // import InputError from '@/components/InputError'
 import Label from '@/components/Label'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState, FormEventHandler } from 'react'
-import { useRouter } from 'next/router'
+import {useAuth} from '@/hooks/auth'
+import {useEffect, useState, FormEventHandler} from 'react'
+import {useRouter} from 'next/router'
 import PrimaryButton from '@/components/PrimaryButton'
 
 const Login = () => {
-    const { query } = useRouter()
+    const {query} = useRouter()
 
-    const { login } = useAuth({
-        middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
-    })
+    const {login} = useAuth({middleware: 'guest', redirectIfAuthenticated: '/dashboard'})
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
-    const [status, setStatus] = useState<string | null>(null)
+    const [status, setStatus] = useState < string | null > (null)
 
     useEffect(() => {
         const reset = query && query.reset ? (query.reset as string) : ''
@@ -41,7 +38,7 @@ const Login = () => {
             password,
             remember: shouldRemember,
             setErrors,
-            setStatus,
+            setStatus
         })
     }
 
@@ -57,44 +54,38 @@ const Login = () => {
                     </p>
                 </div>
                 {/* Session Status */}
-                <AuthSessionStatus className="mb-4" status={status} />
-                <form onSubmit={submitForm} className="flex flex-col gap-5">
+                <AuthSessionStatus className="mb-4"
+                    status={status}/>
+                <form onSubmit={submitForm}
+                    className="flex flex-col gap-5">
                     {/* Email Address */}
                     <div>
                         <Label htmlFor="email">Email</Label>
 
-                        <Input
-                            id="email"
-                            type="email"
+                        <Input id="email" type="email"
                             value={email}
                             className="block mt-1 w-full"
-                            onChange={event => setEmail(event.target.value)}
+                            onChange={
+                                event => setEmail(event.target.value)
+                            }
                             required
-                            isFocused={true}
-                        />
-
-                        {/* <InputError messages={errors.email} className="mt-2" /> */}
-                    </div>
+                            isFocused={true}/> {/* <InputError messages={errors.email} className="mt-2" /> */} </div>
 
                     {/* Password */}
                     <div className="">
                         <Label htmlFor="password">Password</Label>
 
-                        <Input
-                            id="password"
-                            type="password"
+                        <Input id="password" type="password"
                             value={password}
                             className="block mt-1 w-full"
-                            onChange={event => setPassword(event.target.value)}
+                            onChange={
+                                event => setPassword(event.target.value)
+                            }
                             required
-                            autoComplete="current-password"
-                        />
-
-                        {/* <InputError
+                            autoComplete="current-password"/> {/* <InputError
                             messages={errors.password}
                             className="mt-2"
-                        /> */}
-                    </div>
+                        /> */} </div>
 
                     {/* Remember Me */}
                     {/* <div className="block mt-4">
@@ -117,14 +108,10 @@ const Login = () => {
                     <PrimaryButton className="">Login</PrimaryButton>
 
                     <div className="flex items-center justify-between mt-4">
-                        <Link
-                            href="/forgot-password"
-                            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900  rounded-md ">
+                        <Link href="/forgot-password" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900  rounded-md ">
                             Forgot your password?
                         </Link>
-                        <Link
-                            href="/register"
-                            className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900  rounded-md ">
+                        <Link href="/register" className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900  rounded-md ">
                             Create an account?
                         </Link>
                     </div>

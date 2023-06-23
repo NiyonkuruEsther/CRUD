@@ -15,22 +15,7 @@ function App({Component, pageProps} : AppProps) { // suppress useLayoutEffect wa
     return (
         <div className='relative h-screen'>
             {/* Render a navigation menu */}
-            <nav className='bg-yellow-500 sticky top-0'>
-                <ul className='w-full flex justify-end gap-12 text-xl text-white px-12 py-6'>
-                    <li onClick={
-                            () => router.push('/dashboard')
-                        }
-                        className='cursor-pointer'>Home</li>
-                    <li onClick={
-                            () => router.push('/login')
-                        }
-                        className='cursor-pointer'>Login</li>
-                    <li onClick={
-                            () => router.push('/register')
-                        }
-                        className='cursor-pointer'>Register</li>
-                </ul>
-            </nav>
+
 
             {/* Render the component based on the current route */}
             <Component {...pageProps}/>

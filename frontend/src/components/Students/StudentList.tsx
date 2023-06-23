@@ -1,7 +1,5 @@
 import axios from 'axios'
 import {useState, useEffect} from 'react'
-import {nanoid} from 'nanoid'
-import {error} from 'console'
 import AddStudentPopup from './AddStudentPopup'
 
 interface Student {
@@ -21,7 +19,7 @@ interface StudentTableProps {
 const StudentTable: React.FC < StudentTableProps > = ({role}) => {
     const [students, setStudents] = useState < Student[] > ([])
     const [searchTerm, setSearchTerm] = useState('')
-    const [searchResults, setSearchResults] = useState<Student[]>([]);
+    const [searchResults, setSearchResults] = useState < Student[] > ([]);
     // const [currentPage, setCurrentPage] = useState(1)
     // const [studentsPerPage] = useState(5)
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -33,7 +31,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
                     process.env.NEXT_PUBLIC_BACKEND_URL
                 }/api/studentTeachers/${role}`);
                 const data = response.data;
-                console.log(data);
+                // console.log(data);
                 setStudents(data)
                 return data;
             } catch (error) {
@@ -44,12 +42,10 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
     }, [])
 
     useEffect(() => {
-        const results = students.filter((student) =>
-          student.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        const results = students.filter((student) => student.name.toLowerCase().includes(searchTerm.toLowerCase()));
         setSearchResults(results);
-      }, [searchTerm, students]);
-    
+    }, [searchTerm, students]);
+
 
     async function deleteUser(userId : string) {
         try {
@@ -61,6 +57,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
     }
 
     const handleEditStudent = async (student : any, studentId : string, field : string, value : string | number) => {
+
         const updatedStudents = students.map((s) => {
             if (s.id === studentId) {
                 return {
@@ -70,24 +67,32 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
             }
             return s;
         });
-
         setStudents(updatedStudents);
-
         try {
             const {
-                id,
                 ...rest
             } = student;
             const updatedStudent = {
                 ...rest,
                 [field]: value
             };
+            const updatedAges = updatedStudents.filter((s : any) => {
+                if (s.id === studentId) {
+                    return {
+                        ...s,
+                        [field]: value
+                    };
+                }
+                return s;
+            });
+            console.log(updatedStudent, "hhhhhhhhhhhhhhhhhhhhhh");
 
-            const response = await axios.put(`http://localhost:8000/api/studentTeachers/update/${studentId}`, updatedStudent);
+            const response = await axios.put(`http://localhost:8000/api/studentTeachers/update/${studentId}`, field === "grade" ? updatedStudent : updatedAges[0]);
             console.log(response.data); // Optional: Handle the response
         } catch (error) {
             console.error(error); // Optional: Handle the error
         }
+
     };
 
     // console.log(students, 'ayayaydsfds');
@@ -103,17 +108,11 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
 
 
     const handleAddStudent = (newStudent : Omit < Student, 'id' >) => {
-        const id = nanoid();
-        // Generate a unique ID using nanoid
 
-        const studentWithId: Student = {
-            ...newStudent,
-            id: id
-        };
 
         setStudents([
             ...students,
-            studentWithId
+            newStudent
         ]);
 
         const addStudent = async (studentData : Student) => {
@@ -125,7 +124,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
             }
         };
 
-        addStudent(studentWithId);
+        addStudent(newStudent);
     };
 
     const handleDeleteStudent = (studentId : string) => {
@@ -162,7 +161,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
                     <li className=" py-2 place-self-start">Picture</li>
                     <li className=" py-2 place-self-start">Name</li>
                     <li className=" py-2 place-self-start">Age</li>
-                    <li className=" py-2 place-self-start">Grade</li>
+                    <li className=" py-2 place-self-start">Class</li>
                     <li className=" py-2 place-self-start">Actions</li>
                 </ul>
 
@@ -209,7 +208,7 @@ const StudentTable: React.FC < StudentTableProps > = ({role}) => {
                                         student.grade
                                     }
                                     onChange={
-                                        e => handleEditStudent(student, student.id, 'grade', e.target.value,)
+                                        e => e.target.value.length <= 2 && handleEditStudent(student, student.id, 'grade', e.target.value,)
                                     }
                                     className=" py-1 border-none "/>
                                 <button onClick={

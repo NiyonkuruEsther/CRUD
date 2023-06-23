@@ -1,15 +1,12 @@
 // import AppLayout from '@/components/Layouts/AppLayout'
 import Home from '@/assets/Home'
 import Students from '@/assets/Students'
-import Navigation from '@/components/Layouts/Navigation'
 import ResponsiveNavLink, {ResponsiveNavButton} from '@/components/ResponsiveNavLink'
-import StudentTable from '@/components/Students/StudentList'
 import {useAuth} from '@/hooks/auth'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {BiLogOut, BiUserCircle} from 'react-icons/bi'
 import {GiTeacher} from 'react-icons/gi'
-import {CgProfile} from 'react-icons/cg'
 
 const Dashboard = () => {
     const router = useRouter()

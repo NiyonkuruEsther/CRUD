@@ -18,6 +18,7 @@ class TeacherStudent extends Model
         'age',
         'grade',
         'role', 
+        'phone_no',
         'deleted_at'
     ];
 }
